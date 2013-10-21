@@ -1,0 +1,19 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+echo "Installing (downloading if needed) the Alfresco SDK"
+bin/download_sdk
+pushd sdk > /dev/null
+if [ -e "${HOME}/Program/${SDK%%.zip}"]
+then
+    echo "Clearing previous SDK in ${HOME}/Program/${SDK%%.zip}"
+    rm -rf "${HOME}/Program/${SDK%%.zip}"
+fi
+echo "Unpacking SDK in ${HOME}/Program/${SDK%%.zip}"
+unzip ${SDK} -d "${HOME}/Program/${SDK%%.zip}"
+popd > /dev/null
+
+
+

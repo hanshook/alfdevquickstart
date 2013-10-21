@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Starting alfresco"
+cd <INSTALL_DIR>
+./alfresco.sh start
+wait $!
+less +F <INSTALL_DIR>/tomcat/logs/catalina.out
+

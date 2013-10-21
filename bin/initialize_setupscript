@@ -1,0 +1,6 @@
+#! /bin/bash
+
+cd ..
+. conf/version_settings
+. conf/${ALFRESCO_VERSION}/install_settings
+. conf/${ALFRESCO_VERSION}/db_settings

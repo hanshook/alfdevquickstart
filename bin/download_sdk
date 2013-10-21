@@ -1,0 +1,15 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+if [ -e ./sdk/$SDK ]
+then
+    echo "Found sdk $SDK - no need to download"
+else
+    echo "Found no sdk $SDK - downloading..."
+    pushd ./sdk > /dev/null
+    curl -L ${SDK_DOWNLOAD_URL} > ${SDK}
+    popd > /dev/null
+fi
+

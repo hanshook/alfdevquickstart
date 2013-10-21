@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Deploying Alfresco AMPs"
+<INSTALL_DIR>/bin/apply_amps_force.sh
+

@@ -1,0 +1,17 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+if [ -e ./installers/${INSTALLER} ]
+then
+    echo "Found installer $INSTALLER - no need to download"
+else
+    echo "Found no installer $INSTALLER - downloading ..."
+    pushd ./installers > /dev/null
+    curl -L ${INSTALLER_DOWNLOAD_URL} > ${INSTALLER}
+    chmod +x ${INSTALLER}
+    popd > /dev/null
+fi
+
+

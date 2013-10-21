@@ -1,0 +1,45 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+
+# Start scripts and environment
+# -----------------------------
+export VERSION_CONTROL=numbered
+echo "Fixing start and environment scripts"
+
+if [ -e files/$ALFRESCO_VERSION/scripts.setenv.sh ]
+then
+    cp -bv files/$ALFRESCO_VERSION/scripts.setenv.sh $INSTALL_DIR/scripts/setenv.sh
+    sed -i "s#<INSTALL_DIR>#$INSTALL_DIR#g" $INSTALL_DIR/scripts/setenv.sh
+    sed -i "s#<JAVA_HOME>#$ALF_JAVA_HOME#g" $INSTALL_DIR/scripts/setenv.sh
+    chmod +x $INSTALL_DIR/scripts/setenv.sh
+fi
+
+if [ -e files/$ALFRESCO_VERSION/tomcat.scripts.ctl.sh ]
+then
+    cp -bv files/$ALFRESCO_VERSION/tomcat.scripts.ctl.sh $INSTALL_DIR/tomcat/scripts/ctl.sh
+    sed -i "s#<INSTALL_DIR>#$INSTALL_DIR#g" $INSTALL_DIR/tomcat/scripts/ctl.sh
+    sed -i "s#<JAVA_HOME>#$ALF_JAVA_HOME#g" $INSTALL_DIR/tomcat/scripts/ctl.sh
+    chmod +x $INSTALL_DIR/tomcat/scripts/ctl.sh
+fi
+
+if [ -e  files/$ALFRESCO_VERSION/bin.apply_amps_force.sh ]
+then
+    cp -bv files/$ALFRESCO_VERSION/bin.apply_amps_force.sh $INSTALL_DIR/bin/apply_amps_force.sh
+    sed -i "s#<INSTALL_DIR>#$INSTALL_DIR#g" $INSTALL_DIR/bin/apply_amps_force.sh
+    chmod +x $INSTALL_DIR/bin/apply_amps_force.sh
+fi
+
+if [ -e files/$ALFRESCO_VERSION/alf_data.generate_keystores.sh ]
+then
+    cp -bv files/$ALFRESCO_VERSION/alf_data.generate_keystores.sh $INSTALL_DIR/alf_data/keystore/generate_keystores.sh
+    sed -i "s#<INSTALL_DIR>#$INSTALL_DIR#g" $INSTALL_DIR/alf_data/keystore/generate_keystores.sh
+     sed -i "s#<JAVA_HOME>#$ALF_JAVA_HOME#g" $INSTALL_DIR/alf_data/keystore/generate_keystores.sh
+    chmod +x $INSTALL_DIR/alf_data/keystore/generate_keystores.sh
+fi
+
+
+
+

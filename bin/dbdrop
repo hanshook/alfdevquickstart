@@ -1,0 +1,9 @@
+#! /bin/bash
+cd $(dirname $0)
+. initialize_setupscript
+
+
+/usr/bin/mysql -u$DB_ROOT_USER -h$DB_HOST -p$DB_ROOT_PW << eof
+DROP DATABASE IF EXISTS $DB_NAME;
+eof
+

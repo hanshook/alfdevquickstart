@@ -1,0 +1,65 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+
+scripts="alfstart alfstop alfrestart alfclean alfwipe alfwipeall alfbackup alfrestore alflog alfdeployamps"
+# Start scripts and environment
+# -----------------------------
+echo "Installing run scripts"
+
+if [ -z "$USER_BIN" ]
+then 
+    if echo $PATH | grep -q "$HOME/.bin" 
+    then
+	USER_BIN="$HOME/.bin" 
+    else
+	USER_BIN="$HOME/bin"
+    fi
+fi    
+
+if [ ! -d  $USER_BIN ]
+then
+    if [ -e  $USER_BIN ]
+    then
+	echo "Unable to install run-scripts -  $USER_BIN exists but is not a directory..."
+	exit 9
+    else
+	echo "Creating directory $USER_BIN"
+	mkdir -p $USER_BIN
+    fi
+fi
+
+if [ -z "$SOFTLINK_DIR" ]
+then
+    CONTEXT_DIR=$INSTALL_DIR
+else
+    CONTEXT_DIR=$SOFTLINK_DIR/alfresco
+fi
+
+SCRIPT_DIR=${INSTALL_DIR}/altrusoft/bin
+mkdir -p ${SCRIPT_DIR}
+
+rm -rf ${SCRIPT_DIR}/*
+rm -rf ${SCRIPT_DIR}/*.*
+
+for script in $scripts
+do
+    cp startstopscripts/${script} ${SCRIPT_DIR}
+    sed -i "s#<ALFRESCO_VERSION>#$ALFRESCO_VERSION#g" ${SCRIPT_DIR}/${script}
+    sed -i "s#<INSTALL_DIR>#$CONTEXT_DIR#g" ${SCRIPT_DIR}/${script}
+    sed -i "s#<DB_ROOT_USER>#$DB_ROOT_USER#g" ${SCRIPT_DIR}/${script}
+    sed -i "s#<DB_ROOT_PW>#$DB_ROOT_PW#g" ${SCRIPT_DIR}/${script}
+    sed -i "s#<DB_HOST>#$DB_HOST#g" ${SCRIPT_DIR}/${script} 
+    sed -i "s#<DB_NAME>#$DB_NAME#g" ${SCRIPT_DIR}/${script}
+    sed -i "s#<DB_USER>#$DB_USER#g" ${SCRIPT_DIR}/${script}
+    chmod +x  ${SCRIPT_DIR}/${script}
+    rm ${USER_BIN}/${script}
+    ln -s ${SCRIPT_DIR}/${script} ${USER_BIN}/${script}
+done
+
+
+
+
+

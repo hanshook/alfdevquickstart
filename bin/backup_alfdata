@@ -1,0 +1,17 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+
+backup_name=$1
+if [ -z "$backup_name" ] 
+then
+    backup_name="backup"
+fi
+
+# Backup alf-data
+# ---------------------
+echo "Backing up alf data"
+cd $INSTALL_DIR
+tar czf alf_data_${backup_name}.tgz alf_data

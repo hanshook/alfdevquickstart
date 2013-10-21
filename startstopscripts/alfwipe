@@ -1,0 +1,51 @@
+#!/bin/bash
+
+cd $(dirname $0)
+
+echo "Wiping Alfresco data *completely* - flush db and alf data"
+while true; do
+    read -p "Do you wish to do that?" yn
+    case $yn in
+        [Jj]* ) break;;
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+./alfstop
+./alfclean
+cd <INSTALL_DIR>
+if [ ! -e  alf_data_initial.tgz ]
+then
+    echo "Found no intial alf_data to restore - exiting"
+    exit 9
+fi
+echo "Removing current alf_data"
+rm -rf alf_data
+echo "Restoring initial alf_data"
+tar xzf alf_data_initial.tgz
+
+echo "Dropping db"
+/usr/bin/mysql -u<DB_ROOT_USER> -h<DB_HOST> -p<DB_ROOT_PW> << eof
+DROP DATABASE IF EXISTS <DB_NAME>;
+eof
+
+echo "Creating a fresh db"
+if [ "<DB_HOST>" = "localhost" ]
+then
+    /usr/bin/mysql -u<DB_ROOT_USER> -h<DB_HOST> -p<DB_ROOT_PW> << eof
+CREATE DATABASE <DB_NAME>;
+GRANT ALL PRIVILEGES ON <DB_NAME>.* TO '<DB_USER>'@'localhost' WITH GRANT OPTION;
+eof
+else
+    /usr/bin/mysql -u<DB_ROOT_USER> -h<DB_HOST> -p<DB_ROOT_PW> << eof
+CREATE DATABASE <DB_NAME>;
+GRANT ALL PRIVILEGES ON <DB_NAME>.* TO '<DB_USER>'@'%' WITH GRANT OPTION;
+eof
+fi
+
+
+
+
+

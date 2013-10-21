@@ -1,0 +1,41 @@
+#!/bin/bash
+
+workdir=$(pwd)
+backup_name=$1
+
+cd $(dirname $0)
+
+if [ ! -z "$backup_name" ]
+then
+    echo "Backup Alfresco db and alfdata to: $workdir as: $backup_name"
+    backup_name="_${backup_name}"
+else
+    echo "Backup Alfresco db and alfdata to $workdir"
+fi
+
+
+while true; do
+    read -p "Do you wish to do that?" yn
+    case $yn in
+        [Jj]* ) break;;
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+./alfstop
+echo "Backing up alfdata to $workdir/alf_data.tgz"
+cd <INSTALL_DIR>
+tar czf "${workdir}/alf_data${backup_name}.tgz" alf_data
+
+echo "Backing up db to ${workdir}/<DB_NAME>${backup_name}.SQL"
+mysqldump --user=<DB_ROOT_USER> --password=<DB_ROOT_PW> --databases <DB_NAME> > "${workdir}/<DB_NAME>${backup_name}.SQL"
+
+
+
+
+
+
+
+

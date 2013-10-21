@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Cleaning up alfresco"
+cd <INSTALL_DIR>
+rm alfresco.log*
+rm tomcat/logs/*
+bin/clean_tomcat.sh

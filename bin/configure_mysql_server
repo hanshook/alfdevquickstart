@@ -1,0 +1,86 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+function next_section() {
+    section=$1
+    file=$2
+    result=$(grep -e "^\[.*\]$" $file | grep -A1 -e "^\[$section\]$" | tail -1)
+    if [ -z "$result" ]
+    then
+	echo ""
+    else
+	result="${result%]}"
+	result="${result#[}"
+	echo $result
+    fi
+}
+
+function conditional_add_line_in_section() {
+    new_line=$1
+    section=$2
+    file=$3
+
+    if ! cat $file | grep -q "^$new_line"
+    then
+	sudo sed -i "/\[$section\]/a\\
+$new_line" $file
+    fi
+}
+
+function conditional_add_line_before_section() {
+    new_line=$1
+    section=$2
+    file=$3
+
+    if ! cat $file | grep -q "^$new_line"
+    then
+	sudo sed -i "/\[$section\]/i\\
+$new_line" $file
+    fi
+}
+
+function conditional_add_line_at_end_of_section() {
+    new_line=$1
+    section=$2
+    file=$3
+    if ! cat $file | grep -q "^$new_line"
+    then
+	section=$(next_section $section $file)
+	if [ -z "$section" ]
+	then
+	    echo $line >> $file
+	else
+	    sudo sed -i "/\[$section\]/i\\
+$new_line" $file
+	fi
+    fi
+}
+
+
+if cat /etc/*-release | grep -q Ubuntu
+then
+    config_file=/etc/mysql/my.cnf
+elif cat /etc/*-release | grep -q CentOS
+then
+    config_file=/etc/my.cnf
+else
+    echo "Running on unknown Linux distribution - do not know what to do - exiting!"
+    exit 2
+fi
+
+sudo cp -b "${config_file}" "${config_file}.backup"
+
+conditional_add_line_at_end_of_section "default-character-set=utf8" mysql "${config_file}"
+conditional_add_line_at_end_of_section "character-set-server=utf8" mysqld "${config_file}"
+conditional_add_line_at_end_of_section "innodb=ON" mysqld "${config_file}"
+conditional_add_line_at_end_of_section "default-storage-engine=INNODB" mysqld "${config_file}" 
+conditional_add_line_at_end_of_section "sql-mode=\"STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION\"" mysqld "${config_file}" 
+conditional_add_line_at_end_of_section "innodb_locks_unsafe_for_binlog=1" mysqld "${config_file}"
+
+
+
+
+
+

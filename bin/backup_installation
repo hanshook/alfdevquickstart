@@ -1,0 +1,15 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+
+# Backup installation
+# -------------------
+
+echo "Backing up installation"
+cd $INSTALL_DIR/..
+mv -b  alfresco-$ALFRESCO_VERSION-backup.tgz alfresco-$ALFRESCO_VERSION-backup.old.tgz
+tar cfz alfresco-$ALFRESCO_VERSION-backup.tgz alfresco-$ALFRESCO_VERSION
+
+

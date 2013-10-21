@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "Stopping alfresco"
+<INSTALL_DIR>/alfresco.sh stop &
+pid_stop=$!
+
+kill_pid=$(ps aux | grep 'catalina.startup.Bootstrap start' | grep -v 'grep' | awk '{print $2}')
+
+if [ ! -z "$kill_pid" ]
+then
+    echo "Giving alfresco some reasonable time to stop"
+    sleep 10
+    
+    echo "Killing alfresco if it hangs..."
+    
+
+
+    kill $kill_pid
+    wait $kill_pid
+    wait $pid_stop
+fi

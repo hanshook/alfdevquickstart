@@ -1,0 +1,32 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+
+
+# Creating a link to the installation
+# -----------------------------------
+
+if [ -z "$SOFTLINK_DIR" ]
+then
+    SOFTLINK_DIR=$INSTALL_DIR/..
+fi
+
+if [ -e $SOFTLINK_DIR/alfresco ]
+then
+    if [ -L $SOFTLINK_DIR/alfresco ]
+    then
+	echo "Removing previous link $SOFTLINK_DIR/alfresco"
+	rm -rf $SOFTLINK_DIR/alfresco
+    else
+	echo "Unable to create a link $SOFTLINK_DIR/alfresco"
+	exit 0
+    fi
+fi
+echo "Creating link $SOFTLINK_DIR/alfresco to the new installation"
+ln -s $INSTALL_DIR $SOFTLINK_DIR/alfresco
+
+
+
+

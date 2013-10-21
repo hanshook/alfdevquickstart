@@ -1,0 +1,35 @@
+#! /bin/bash
+# Config for ALFRESCO_VERSION 4.0.d
+
+# User bin
+#    USER_BIN="$HOME/.bin" 
+#    USER_BIN="$HOME/bin"
+ 
+# Program dir
+PROGRAM_DIR=$HOME/Program
+
+# Alfresco setup parameters
+INSTALLER=alfresco-community-$ALFRESCO_VERSION-installer-linux-x64.bin 
+
+INSTALLER_DOWNLOAD_URL="http://sourceforge.net/projects/alfresco/files/Alfresco%204.0.d%20Community/alfresco-community-4.0.d-installer-linux-x64.bin/download?use_mirror=optimate"
+SDK_DOWNLOAD_URL='http://sourceforge.net/projects/alfresco/files/Alfresco%204.0.d%20Community/alfresco-community-sdk-4.0.d.zip/download?use_mirror=optimate'
+
+# Alfresco setup parameters
+INSTALLER=alfresco-community-${ALFRESCO_VERSION}-installer-linux-x64.bin 
+SDK=alfresco-community-sdk-${ALFRESCO_VERSION}.zip  
+
+ALFRESCO_COMPONENTS="javaalfresco,alfrescosharepoint,alfrescowcmqs,openofficecomponent"
+
+INSTALL_DIR=$PROGRAM_DIR/alfresco-$ALFRESCO_VERSION
+
+# If RELOCATE_ALF_DATA set to true alf data will be moved to
+# ALF_DATA_CONTEXT_DIR during install
+RELOCATE_ALF_DATA=false
+ALF_DATA_CONTEXT_DIR=/var/alfresco-$ALFRESCO_VERSION
+
+#ALF_JAVA_HOME=$JAVA_HOME
+#ALF_JAVA_HOME=/usr/lib/jvm/java-6-sun
+# Strangely the bundled version of java 6 works best, i.e:
+ALF_JAVA_HOME=$INSTALL_DIR/java
+
+ALF_ADMIN_PW="123456"

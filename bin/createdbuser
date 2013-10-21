@@ -1,0 +1,30 @@
+#! /bin/bash
+cd $(dirname $0)
+. initialize_setupscript
+
+
+/usr/bin/mysql -u$DB_ROOT_USER -h$DB_HOST -p$DB_ROOT_PW << eof
+drop user '$DB_USER'@'%';
+flush privileges;
+eof
+
+
+if [ "$DB_HOST" = "localhost" ]
+then
+    /usr/bin/mysql -u$DB_ROOT_USER -h$DB_HOST -p$DB_ROOT_PW << eof
+drop user '$DB_USER'@'localhost';
+flush privileges;
+eof
+    /usr/bin/mysql -u$DB_ROOT_USER -h$DB_HOST -p$DB_ROOT_PW << eof
+flush privileges;
+create user '$DB_USER'@'localhost' identified by '$DB_PW';
+eof
+
+else
+    /usr/bin/mysql -u$DB_ROOT_USER -h$DB_HOST -p$DB_ROOT_PW << eof
+flush privileges;
+create user '$DB_USER'@'%' identified by '$DB_PW';
+eof
+
+fi
+

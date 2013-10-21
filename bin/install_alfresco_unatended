@@ -1,0 +1,21 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+
+./installers/$INSTALLER --unattendedmodeui none \
+--mode unattended \
+--enable-components $ALFRESCO_COMPONENTS \
+--disable-components postgres \
+--prefix $INSTALL_DIR \
+--jdbc_url $JDBC_URL \
+--jdbc_driver $JDBC_DRIVER \
+--jdbc_database $DB_NAME \
+--jdbc_username $DB_USER \
+--jdbc_password $DB_PW \
+--alfresco_admin_password $ALF_ADMIN_PW \
+--debugtrace alf_install.log
+
+
+

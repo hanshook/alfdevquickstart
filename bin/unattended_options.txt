@@ -1,0 +1,105 @@
+Alfresco Community 4.0.d
+Usage:
+
+ --help                         Display the list of valid options
+
+ --version                      Display product information
+
+ --optionfile <optionfile>      Installation option file
+                                Default: 
+
+ --unattendedmodeui <unattendedmodeui> Unattended Mode UI
+                                Default: none
+                                Allowed: none minimal minimalWithDialogs
+
+ --debuglevel <debuglevel>      Debug information level of verbosity
+                                Default: 2
+                                Allowed: 0 1 2 3 4
+
+ --mode <mode>                  Installation mode
+                                Default: gtk
+                                Allowed: gtk xwindow text unattended
+
+ --debugtrace <debugtrace>      Debug filename
+                                Default: 
+
+ --enable-components <enable-components> Comma-separated list of components
+                                Default: javaalfresco,postgres,alfresco,alfrescosharepoint,openofficecomponent
+                                Allowed: javaalfresco postgres alfrescosharepoint alfrescowcmqs openofficecomponent
+
+ --disable-components <disable-components> Comma-separated list of components
+                                Default: alfrescowcmqs
+                                Allowed: javaalfresco postgres alfrescosharepoint alfrescowcmqs openofficecomponent
+
+ --installer-language <installer-language> Language selection
+                                Default: en
+                                Allowed: en fr es it de ja nl
+
+ --prefix <prefix>              Select a folder
+                                Default: 
+
+ --jdbc_url <jdbc_url>          JDBC URL:
+                                Default: jdbc:postgresql://localhost/alfresco
+
+ --jdbc_driver <jdbc_driver>    JDBC Driver:
+                                Default: org.postgresql.Driver
+
+ --jdbc_database <jdbc_database> Database name:
+                                Default: alfresco
+
+ --jdbc_username <jdbc_username> Username:
+                                Default: 
+
+ --jdbc_password <jdbc_password> Password:
+                                Default: 
+
+ --postgres_port <postgres_port> Database Server port
+                                Default: 5432
+
+ --tomcat_installation_type <tomcat_installation_type> 
+                                Default: 
+
+ --tomcat_server_directory <tomcat_server_directory> Tomcat directory:
+                                Default: /tomcat
+
+ --tomcat_server_domain <tomcat_server_domain> Web Server domain:
+                                Default: 127.0.0.1
+
+ --tomcat_server_port <tomcat_server_port> Tomcat Server Port:
+                                Default: 8080
+
+ --tomcat_server_shutdown_port <tomcat_server_shutdown_port> Tomcat Shutdown Port:
+                                Default: 8005
+
+ --tomcat_server_ssl_port <tomcat_server_ssl_port> Tomcat SSL Port
+                                Default: 8443
+
+ --tomcat_server_ajp_port <tomcat_server_ajp_port> Tomcat AJP Port:
+                                Default: 8009
+
+ --alfresco_ftp_port <alfresco_ftp_port> Port:
+                                Default: 21
+
+ --alfresco_rmi_port <alfresco_rmi_port> Port:
+                                Default: 50500
+
+ --alfresco_admin_password <alfresco_admin_password> Admin Password:
+                                Default: 
+
+ --alfresco_sharepoint_port <alfresco_sharepoint_port> Port:
+                                Default: 7070
+
+ --baseunixservice_install_as_service <baseunixservice_install_as_service> Install Alfresco Community as a service?
+                                Default: 1
+
+ --baseunixservice_script_name <baseunixservice_script_name> Service script name:
+                                Default: alfresco
+
+ --openoffice_port <openoffice_port> OpenOffice Server port
+                                Default: 8100
+
+ --alfrescocustomstack_services_startup <alfrescocustomstack_services_startup> 
+                                Default: demand
+                                Allowed: demand auto
+
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Display alfresco log"
+less +F <INSTALL_DIR>/tomcat/logs/catalina.out
+
