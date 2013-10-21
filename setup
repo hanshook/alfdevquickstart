@@ -208,13 +208,15 @@ else
     echo "Unable to configue swedish - no translation jar found"
 fi
 
+# Installing run scripts
+# ----------------------
+bin/install_run_scripts
+
+
 # Backup installation
 # -------------------
 bin/backup_installation
 
-# Installing run scripts
-# ----------------------
-bin/install_run_scripts
 
 # SDK
 # ---
