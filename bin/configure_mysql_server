@@ -61,9 +61,11 @@ $new_line" $file
 
 if cat /etc/*-release | grep -q Ubuntu
 then
+    echo "Running on Ubuntu - configuring /etc/mysql/my.cnf"
     config_file=/etc/mysql/my.cnf
 elif cat /etc/*-release | grep -q CentOS
 then
+    echo "Running on CentOS - configuring /etc/my.cnf"
     config_file=/etc/my.cnf
 else
     echo "Running on unknown Linux distribution - do not know what to do - exiting!"
@@ -81,6 +83,7 @@ conditional_add_line_at_end_of_section "innodb_locks_unsafe_for_binlog=1" mysqld
 
 
 
+echo "Done configuring mysql!"
 
 
 

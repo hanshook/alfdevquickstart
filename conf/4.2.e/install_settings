@@ -7,8 +7,8 @@
  
 # Program dir
 SOFTLINK_DIR=$HOME/Program
-PROGRAM_DIR=$HOME/Program
-#PROGRAM_DIR=/opt/$USER
+#PROGRAM_DIR=$HOME/Program
+PROGRAM_DIR=/opt/$USER
 
 INSTALLER_DOWNLOAD_URL="http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-4.2.e-installer-linux-x64.bin/download?use_mirror=optimate"
 SDK_DOWNLOAD_URL='http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-sdk-4.2.e.zip/download?use_mirror=optimate'

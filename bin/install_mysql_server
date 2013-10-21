@@ -13,15 +13,18 @@ quiet_install() {
 if cat /etc/*-release | grep -q Ubuntu
 then
 
-    # Install mysql
+    echo "Installing mysql via apt-get - we are on ubuntu"
     sudo quiet_install mysql-server
 
-    # set mysql root password
+    sudo "Setting mysql root password"
     mysql_root_password=$DB_ROOT_PW
     mysqladmin -u root password "$mysql_root_password"
 elif  cat /etc/*-release | grep -q CentOS
 then
+    echo "Installing mysql via yum - we are on CentOS"
     yum install mysql mysql-server mysql-connector-java
+else
+    echo "Unable to install mysql - we are not on ubuntu or CentOS"
 fi
 #rpm -qa | grep mysql-server
 
