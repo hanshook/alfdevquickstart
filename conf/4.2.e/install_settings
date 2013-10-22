@@ -18,7 +18,8 @@ INSTALLER=alfresco-community-${ALFRESCO_VERSION}-installer-linux-x64.bin
 SDK=alfresco-community-sdk-${ALFRESCO_VERSION}.zip  
 
 #ALFRESCO_COMPONENTS="javaalfresco,alfrescosharepoint,alfrescowcmqs,openofficecomponent"
-ALFRESCO_COMPONENTS="javaalfresco,alfrescosharepoint,alfrescowcmqs,libreofficecomponent"
+ALFRESCO_COMPONENTS="javaalfresco,alfresco,alfrescosharepoint,alfrescogoogledocs,libreofficecomponent"
+ALFRESCO_DISABLED_COMPONENTS="postgres,alfrescowcmqs"
 
 INSTALL_DIR=$PROGRAM_DIR/alfresco-$ALFRESCO_VERSION
 

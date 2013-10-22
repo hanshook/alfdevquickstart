@@ -10,8 +10,13 @@ else
     echo "Found no installer $INSTALLER - downloading ..."
     pushd ./installers > /dev/null
     curl -L ${INSTALLER_DOWNLOAD_URL} > ${INSTALLER}
-    chmod +x ${INSTALLER}
     popd > /dev/null
 fi
+
+echo "Ensuring executability of installer" 
+pushd ./installers > /dev/null
+chmod +x ${INSTALLER}
+popd > /dev/null
+
 
 

@@ -4,10 +4,16 @@ cd $(dirname $0)
 . initialize_setupscript
 
 
+ 
+if [ -z "$ALFRESCO_DISABLED_COMPONENTS" ]
+then
+  ALFRESCO_DISABLED_COMPONENTS="postgres"
+fi
+  
 ./installers/$INSTALLER --unattendedmodeui none \
 --mode unattended \
 --enable-components $ALFRESCO_COMPONENTS \
---disable-components postgres \
+--disable-components $ALFRESCO_DISABLED_COMPONENTS \
 --prefix $INSTALL_DIR \
 --jdbc_url $JDBC_URL \
 --jdbc_driver $JDBC_DRIVER \
@@ -15,7 +21,7 @@ cd $(dirname $0)
 --jdbc_username $DB_USER \
 --jdbc_password $DB_PW \
 --alfresco_admin_password $ALF_ADMIN_PW \
---debugtrace alf_install.log
+--debugtrace ${HOME}/alf_install.log
 
 
 

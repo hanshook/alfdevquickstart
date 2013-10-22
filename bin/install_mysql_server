@@ -4,17 +4,11 @@ cd $(dirname $0)
 . initialize_setupscript
 
 
-quiet_install() {
-   export DEBIAN_FRONTEND=noninteractive
-   apt-get -q -y install "$@"
-   export DEBIAN_FRONTEND=""
-}
-
 if cat /etc/*-release | grep -q Ubuntu
 then
 
     echo "Installing mysql via apt-get - we are on ubuntu"
-    sudo quiet_install mysql-server
+    sudo bin/quiet_install_debs mysql-server
 
     sudo "Setting mysql root password"
     mysql_root_password=$DB_ROOT_PW

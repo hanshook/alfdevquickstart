@@ -220,4 +220,27 @@ bin/backup_installation
 
 # SDK
 # ---
-bin/install_sdk
+
+if $UNATTENDED
+then
+    install_sdk=true   
+    echo "This will install a fresh SDK (${SDK})"
+else
+    echo "This may install a fresh SDK (${SDK})"
+    install_sdk=false
+    while true; do
+	echo "Do you want to do that?"
+	read -p "This will wipe any previous install? (Y/N)" yn
+	case $yn in
+            [Jj]* ) install_sdk=true; break;;
+            [Yy]* ) install_sdk=true; break;;
+            [Nn]* ) break;;
+            * ) echo "Please answer yes or no.";;
+	esac
+    done
+fi
+
+if $install_sdk
+then
+    bin/install_sdk
+fi
