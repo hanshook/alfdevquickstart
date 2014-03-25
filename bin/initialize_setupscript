@@ -2,5 +2,14 @@
 
 cd ..
 . conf/version_settings
+if [ -e conf/${ALFRESCO_VERSION}/version_settings ]
+then
+    . conf/${ALFRESCO_VERSION}/version_setting
+fi
+
 . conf/${ALFRESCO_VERSION}/install_settings
-. conf/${ALFRESCO_VERSION}/db_settings
+
+if [ -e conf/${ALFRESCO_VERSION}/db_settings ]
+then
+    . conf/${ALFRESCO_VERSION}/db_settings
+fi

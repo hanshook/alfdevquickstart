@@ -1,0 +1,18 @@
+#! /bin/bash
+# Config for ALFRESCO_VERSION 4.2.e
+
+INSTALLER=alfresco-community-${ALFRESCO_VERSION}-installer-linux-x64.bin 
+
+INSTALLER_DOWNLOAD_URL="http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-4.2.e-installer-linux-x64.bin/download?use_mirror=optimate"
+
+SDK=alfresco-community-sdk-${ALFRESCO_VERSION}.zip  
+
+SDK_DOWNLOAD_URL='http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-sdk-4.2.e.zip/download?use_mirror=optimate'
+
+LANGUAGE_PACK=Community-4.2.4.1-Alfresco-4.2.e-Swedish
+LANGUAGE_PACK_DOWNLOAD_URL="http://alfresco-swedish.googlecode.com/files/Community-4.2.2.0-Alfresco-4.2.c-Swedish.zip"
+
+
+
+
+

@@ -1,0 +1,30 @@
+#! /bin/bash
+
+cd $(dirname $0)
+. initialize_setupscript
+
+mkdir -p ./language_packs
+
+if [ -e ./language_packs/${LANGUAGE_PACK} ]
+then
+    echo "Found language pack $LANGUAGE_PACK - no need to download"
+else
+    echo "Found no installer $INSTALLER - downloading ..."
+    pushd ./language_packs > /dev/null
+    if [ -e lp.zip ] 
+    then
+	rm lp.zip
+    fi
+    curl -L ${LANGUAGE_PACK_DOWNLOAD_URL} > lp.zip
+    if [ -e lp.zip ] 
+    then
+	unzip lp.zip -d ${LANGUAGE_PACK}
+	rm lp.zip
+    fi
+    popd > /dev/null
+fi
+
+
+
+
+

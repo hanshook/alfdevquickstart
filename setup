@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# Defaults:
+DB_USE_MYSQL=true
+
 if [ "$1" = "--unattended" ]
 then
     UNATTENDED=true
@@ -17,6 +20,7 @@ cd bin
 
 mkdir -v sdk
 mkdir -v installers
+mkdir -v language_packs
 
 if $UNATTENDED 
 then
@@ -68,92 +72,100 @@ then
 
     # Creating a link to the installation
     # -----------------------------------
+
     bin/create_alfresco_softlink
+
 fi
 
-
-if [ "$DB_HOST" = "localhost" ]
+if $DB_USE_MYSQL 
 then
-    has_mysql=false
-    if dpkg-query -l mysql-server > /dev/null
-    then
-	echo "You have mysql-server installd locally."
-	has_mysql=true
-    else
-	echo "Following steps requires a mysql-server"
-	echo "You do not have mysql-server installed locally!"
-	if $UNATTENDED
-	then
-	    install_mysql=true
-	else
-	    install_mysql=false
-	    while true; do
-		read -p "Do you want to install mysql locally (Y/N)?" yn
-		case $yn in
-		    [Jj]* ) install_mysql=true; break;;
-		    [Yy]* ) install_mysql=true; break;;
-		    [Nn]* ) break;;
-		    * ) echo "Please answer yes or no.";;
-		esac
-	    done
-	fi
+    echo "Using mysql as db"
 
-	if $install_mysql
+    if [ "$DB_HOST" = "localhost" ]
+    then
+	has_mysql=false
+	if dpkg-query -l mysql-server > /dev/null
 	then
-	    echo "Installing mysql server"
-	    bin/install_mysql_server
+	    echo "You have mysql-server installd locally."
 	    has_mysql=true
-	fi
-    fi
-    if $has_mysql
-    then
-	echo "Following steps require a a properly configured mysql-server"
-	if $UNATTENDED
-	then
-	    configure_mysql=true
 	else
-	    configure_mysql=false
-	    while true; do
-		read -p "Do you want to configure the mysql-server installed locally for alfresco (Y/N)?" yn
-		case $yn in
-		    [Jj]* ) configure_mysql=true; break;;
-		    [Yy]* ) configure_mysql=true; break;;
-		    [Nn]* ) break;;
-		    * ) echo "Please answer yes or no.";;
-		esac
-	    done
-	fi
+	    echo "Following steps requires a mysql-server"
+	    echo "You do not have mysql-server installed locally!"
+	    if $UNATTENDED
+	    then
+		install_mysql=true
+	    else
+		install_mysql=false
+		while true; do
+		    read -p "Do you want to install mysql locally (Y/N)?" yn
+		    case $yn in
+			[Jj]* ) install_mysql=true; break;;
+			[Yy]* ) install_mysql=true; break;;
+			[Nn]* ) break;;
+			* ) echo "Please answer yes or no.";;
+		    esac
+		done
+	    fi
 
-	if $configure_mysql
+	    if $install_mysql
+	    then
+		echo "Installing mysql server"
+		bin/install_mysql_server
+		has_mysql=true
+	    fi
+	fi
+	if $has_mysql
 	then
-	    echo "Configuring mysql server"
-	    bin/configure_mysql_server
+	    echo "Following steps require a a properly configured mysql-server"
+	    if $UNATTENDED
+	    then
+		configure_mysql=true
+	    else
+		configure_mysql=false
+		while true; do
+		    read -p "Do you want to configure the mysql-server installed locally for alfresco (Y/N)?" yn
+		    case $yn in
+			[Jj]* ) configure_mysql=true; break;;
+			[Yy]* ) configure_mysql=true; break;;
+			[Nn]* ) break;;
+			* ) echo "Please answer yes or no.";;
+		    esac
+		done
+	    fi
+
+	    if $configure_mysql
+	    then
+		echo "Configuring mysql server"
+		bin/configure_mysql_server
+	    fi
 	fi
     fi
-fi
 
-if ! $UNATTENDED
-then
-    echo "=========================================================================================="
-    echo "IMPORTANT: Next steps require an existing (fresh)"
-    echo "           alfresco installation in $INSTALL_DIR" 
-    echo "           and also a properly configured mysql-server at $DB_HOST"
-    echo "=========================================================================================="
-    while true; do
-	read -p "Do you wish to go on and configure the alfresco installation for local development usage (Y/N)?" yn
-	case $yn in
-            [Jj]* ) break;;
-            [Yy]* ) break;;
-            [Nn]* ) exit 0;;
-        * ) echo "Please answer yes or no.";;
-	esac
-    done
-fi
+    if ! $UNATTENDED
+    then
+	echo "=========================================================================================="
+	echo "IMPORTANT: Next steps require an existing (fresh)"
+	echo "           alfresco installation in $INSTALL_DIR" 
+	echo "           and also a properly configured mysql-server at $DB_HOST"
+	echo "=========================================================================================="
+	while true; do
+	    read -p "Do you wish to go on and configure the alfresco installation for local development usage (Y/N)?" yn
+	    case $yn in
+		[Jj]* ) break;;
+		[Yy]* ) break;;
+		[Nn]* ) exit 0;;
+		* ) echo "Please answer yes or no.";;
+	    esac
+	done
+    fi
 
-# Create DB
-# ---------
-echo "(Re)creating a db"
-bin/dbrecreate
+    # Create DB
+    # ---------
+    echo "(Re)creating a db"
+    bin/dbrecreate
+else
+    echo "Using bundled postgressql as db"    
+fi
 
 # Start scripts and environment config
 # ------------------------------------
@@ -179,8 +191,11 @@ bin/backup_alfdata "initial"
 
 # MySQL connector
 # ---------------
-echo "Installing MySQL connector"
-cp -v files/$ALFRESCO_VERSION/mysql-connector-*.jar $INSTALL_DIR/tomcat/lib
+if $DB_USE_MYSQL 
+then
+    echo "Installing MySQL connector"
+    cp -v files/$ALFRESCO_VERSION/mysql-connector-*.jar $INSTALL_DIR/tomcat/lib
+fi
 
 # Move Alf Data
 # -------------
@@ -200,17 +215,27 @@ fi
 # Swedish
 # -------
 
-if [ -e files/$ALFRESCO_VERSION/share_sv_SE-*.jar ]
+if [ ! -z "${LANGUAGE_PACK}" ]
 then
-    echo "Configuring swedish"
-    cp files/$ALFRESCO_VERSION/share_sv_SE-*.jar $INSTALL_DIR/tomcat/shared/lib
-else
-    echo "Unable to configue swedish - no translation jar found"
+    bin/download_language_pack
+    
+    if [ -e ./language_packs/${LANGUAGE_PACK}/InstallOption1 ]
+    then
+	echo "Configuring language pack"
+	cp ./language_packs/${LANGUAGE_PACK}/InstallOption1/share_*.jar $INSTALL_DIR/tomcat/shared/lib
+    else
+	echo "Unable to configue language pack - no translation jar found"
+    fi
 fi
 
 # Installing run scripts
 # ----------------------
-bin/install_run_scripts
+if [[ $EUID -ne 0 ]] 
+then
+    bin/install_run_scripts
+else
+    echo "run as user root - not installing user runscripts"
+fi
 
 
 # Backup installation
@@ -223,8 +248,13 @@ bin/backup_installation
 
 if $UNATTENDED
 then
-    install_sdk=true   
-    echo "This will install a fresh SDK (${SDK})"
+    if [[ $EUID -ne 0 ]] 
+    then
+	install_sdk=true
+	echo "Will now install a fresh SDK (${SDK})"
+    else
+	install_sdk=false   
+    fi
 else
     echo "This may install a fresh SDK (${SDK})"
     install_sdk=false

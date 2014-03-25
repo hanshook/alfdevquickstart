@@ -6,9 +6,18 @@
 #    USER_BIN="$HOME/bin"
  
 # Program dir
-SOFTLINK_DIR=$HOME/Program
-#PROGRAM_DIR=$HOME/Program
-PROGRAM_DIR=/opt/$USER
+if [[ $EUID -ne 0 ]] 
+then
+    PROGRAM_DIR=$HOME/Program
+    #PROGRAM_DIR=/opt/$USER
+    SOFTLINK_DIR=$HOME/Program
+else
+    PROGRAM_DIR=/opt
+    SOFTLINK_DIR=/opt
+fi
+
+# Database
+DB_USE_MYSQL=false
 
 INSTALLER_DOWNLOAD_URL="http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-4.2.e-installer-linux-x64.bin/download?use_mirror=optimate"
 SDK_DOWNLOAD_URL='http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-sdk-4.2.e.zip/download?use_mirror=optimate'
@@ -17,20 +26,32 @@ SDK_DOWNLOAD_URL='http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.
 INSTALLER=alfresco-community-${ALFRESCO_VERSION}-installer-linux-x64.bin 
 SDK=alfresco-community-sdk-${ALFRESCO_VERSION}.zip  
 
-#ALFRESCO_COMPONENTS="javaalfresco,alfrescosharepoint,alfrescowcmqs,openofficecomponent"
-ALFRESCO_COMPONENTS="javaalfresco,alfresco,alfrescosharepoint,alfrescogoogledocs,libreofficecomponent"
-ALFRESCO_DISABLED_COMPONENTS="postgres,alfrescowcmqs"
+LANGUAGE_PACK=Community-4.2.4.1-Alfresco-4.2.e-Swedish
+LANGUAGE_PACK_DOWNLOAD_URL="http://alfresco-swedish.googlecode.com/files/Community-4.2.2.0-Alfresco-4.2.c-Swedish.zip"
+
+ALFRESCO_COMPONENTS="javaalfresco,alfrescosharepoint,alfrescogoogledocs,libreofficecomponent"
+ALFRESCO_DISABLED_COMPONENTS="alfrescowcmqs"
+
+if $DB_USE_MYSQL
+then
+    ALFRESCO_DISABLED_COMPONENTS="postgres,$ALFRESCO_DISABLED_COMPONENTS"
+else
+    ALFRESCO_COMPONENTS="postgres,$ALFRESCO_COMPONENTS"
+fi
 
 INSTALL_DIR=$PROGRAM_DIR/alfresco-$ALFRESCO_VERSION
 
 # If RELOCATE_ALF_DATA set to true alf data will be moved to
 # ALF_DATA_CONTEXT_DIR during install
-RELOCATE_ALF_DATA=false
-ALF_DATA_CONTEXT_DIR=/var/alfresco-$ALFRESCO_VERSION
+RELOCATE_ALF_DATA=true
+ALF_DATA_CONTEXT_DIR=/var/alfresco/alfresco-$ALFRESCO_VERSION
 
 #ALF_JAVA_HOME=$JAVA_HOME
 #ALF_JAVA_HOME=/usr/lib/jvm/java-6-sun
-# Strangely the bundled version of java 6 works best, i.e:
+# The bundled version of java works best, i.e:
 ALF_JAVA_HOME=$INSTALL_DIR/java
 
 ALF_ADMIN_PW="123456"
+
+
+

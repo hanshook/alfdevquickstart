@@ -7,7 +7,12 @@ cd $(dirname $0)
  
 if [ -z "$ALFRESCO_DISABLED_COMPONENTS" ]
 then
-  ALFRESCO_DISABLED_COMPONENTS="postgres"
+    if $DB_USE_MYSQL 
+    then
+	ALFRESCO_DISABLED_COMPONENTS="postgres"
+    else
+	ALFRESCO_DISABLED_COMPONENTS=""
+    fi
 fi
   
 ./installers/$INSTALLER --unattendedmodeui none \
