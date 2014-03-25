@@ -4,7 +4,7 @@ cd ..
 . conf/version_settings
 if [ -e conf/${ALFRESCO_VERSION}/version_settings ]
 then
-    . conf/${ALFRESCO_VERSION}/version_setting
+    . conf/${ALFRESCO_VERSION}/version_settings
 fi
 
 . conf/${ALFRESCO_VERSION}/install_settings

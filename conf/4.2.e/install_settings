@@ -19,16 +19,6 @@ fi
 # Database
 DB_USE_MYSQL=false
 
-INSTALLER_DOWNLOAD_URL="http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-4.2.e-installer-linux-x64.bin/download?use_mirror=optimate"
-SDK_DOWNLOAD_URL='http://sourceforge.net/projects/alfresco/files/Alfresco%204.2.e%20Community/alfresco-community-sdk-4.2.e.zip/download?use_mirror=optimate'
-
-# Alfresco setup parameters
-INSTALLER=alfresco-community-${ALFRESCO_VERSION}-installer-linux-x64.bin 
-SDK=alfresco-community-sdk-${ALFRESCO_VERSION}.zip  
-
-LANGUAGE_PACK=Community-4.2.4.1-Alfresco-4.2.e-Swedish
-LANGUAGE_PACK_DOWNLOAD_URL="http://alfresco-swedish.googlecode.com/files/Community-4.2.2.0-Alfresco-4.2.c-Swedish.zip"
-
 ALFRESCO_COMPONENTS="javaalfresco,alfrescosharepoint,alfrescogoogledocs,libreofficecomponent"
 ALFRESCO_DISABLED_COMPONENTS="alfrescowcmqs"
 
